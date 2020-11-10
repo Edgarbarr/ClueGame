@@ -49,10 +49,13 @@ public class Game {
     }
     private void generateGame() {
         hp.setCurrentRoom(RoomType.BALLROOM);
-        System.out.println("Welcome to clue");
+        stories.welcomeMessage();
+//        System.out.println("Welcome to clue");
         playerPause();
         System.out.println("A crazy mystery game its pretty cool");
         playerPause();
+        stories.menu();
+
     }
     private Guess askPlayerGuess(){
 

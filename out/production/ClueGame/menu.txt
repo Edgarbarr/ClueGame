@@ -1,0 +1,1 @@
+﻿Would you like to know more?Press “1” for InstructionsPress “2” for a list of charactersPress “3” for a list of possible weaponsPress “4” for a list of rooms in the housePress “5” for a map of the houseAt any time you may type “exit” to quit
