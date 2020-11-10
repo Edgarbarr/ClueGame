@@ -11,7 +11,7 @@ public class Game {
     private Solution solution;
     private Player hp = new Player();
     private Stories stories;
-    private GameMap gameMap = new GameMap();
+    private GameMap gameMap = new GameMap.Builder().generateStandardMap().build();
     private Scanner scanner = new Scanner(System.in);
 
 //    private Thread bRoleThread;
@@ -48,7 +48,6 @@ public class Game {
 
     }
     private void generateGame() {
-        createGameMap();
         hp.setCurrentRoom(RoomType.BALLROOM);
         System.out.println("Welcome to clue");
         playerPause();
@@ -186,18 +185,7 @@ public class Game {
         System.out.println("You found a clue");
         return new Clue();
     }
-    private void createGameMap() {
-            gameMap.setRoom(RoomType.KITCHEN, new Exit("N", RoomType.LIBRARY), new Exit("E", RoomType.BALLROOM));
-            gameMap.setRoom(RoomType.BALLROOM, new Exit("N", RoomType.DINING_ROOM), new Exit("W", RoomType.KITCHEN), new Exit("E", RoomType.BILLIARD_ROOM));
-            gameMap.setRoom(RoomType.BILLIARD_ROOM, new Exit("N", RoomType.BEDROOM), new Exit("W", RoomType.BALLROOM));
-            gameMap.setRoom(RoomType.LIBRARY, new Exit("S", RoomType.KITCHEN), new Exit("N", RoomType.LOUNGE), new Exit("SE", RoomType.BEDROOM), new Exit("NE", RoomType.HALL));
-            gameMap.setRoom(RoomType.BEDROOM, new Exit("N",RoomType.HALL), new Exit("S", RoomType.BILLIARD_ROOM), new Exit("W", RoomType.LIBRARY));
-            gameMap.setRoom(RoomType.HALL, new Exit("S", RoomType.BEDROOM), new Exit("N", RoomType.CELLAR), new Exit("W", RoomType.LIBRARY));
-            gameMap.setRoom(RoomType.LOUNGE, new Exit("E", RoomType.DINING_ROOM), new Exit("S", RoomType.LIBRARY));
-            gameMap.setRoom(RoomType.DINING_ROOM, new Exit("S", RoomType.BALLROOM), new Exit("W", RoomType.LOUNGE), new Exit("E", RoomType.CELLAR));
-            gameMap.setRoom(RoomType.CELLAR, new Exit("S", RoomType.HALL), new Exit("W", RoomType.DINING_ROOM));
 
-    }
     private void printMap() {
         scanner.nextLine();
              playerPause();

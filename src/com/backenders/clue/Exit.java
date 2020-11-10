@@ -1,10 +1,10 @@
 package com.backenders.clue;
 
-public class Exit {
+class Exit {
     private String direction;
     private RoomType room;
 
-    public Exit(String direction, RoomType room) {
+    Exit(String direction, RoomType room) {
         this.direction = direction;
         this.room = room;
     }
