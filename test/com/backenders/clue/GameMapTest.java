@@ -37,4 +37,7 @@ class GameMapTest {
         assertNull(gameMap.getExits(invalidRoom));
     }
 
+    @Test
+    void name() {
+    }
 }
