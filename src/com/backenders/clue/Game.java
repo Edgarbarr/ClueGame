@@ -37,7 +37,7 @@ public class Game {
             switch(choice) {
                 case 0 -> askPlayerGuess();
                 case 1 -> offerMoveToPlayer(hp.getCurrentRoom());
-                case 2 -> checkForClues();
+//                case 2 -> checkForClues();
                 case 3 -> checkJournal();
                 case 4 -> quit();
                 default -> System.out.println("thats not something you can do");
@@ -184,10 +184,7 @@ public class Game {
         }
     }
 
-    public Clue checkForClues() {
-        System.out.println("You found a clue");
-        return new Clue();
-    }
+   
 
     private void printMap() {
         scanner.nextLine();
