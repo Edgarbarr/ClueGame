@@ -1,7 +1,7 @@
 package com.backenders.clue;
 
 import org.junit.Test;
-import org.junit.Assert;
+import static org.junit.Assert.*;
 public class GameMapTest {
     @Test(expected = RoomExitIsItselfException.class)
     public void build_whenARoomIsGivenItselfAsAnExit_shouldThrowRoomExitIsItselfException() {
