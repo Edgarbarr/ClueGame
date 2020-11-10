@@ -12,7 +12,12 @@ class GameMap {
     }
     public void setRoom(RoomType room, Exit ...exits) {
         Map<String, RoomType> exitsMap = new HashMap<>();
-        Arrays.stream(exits).sequential().forEach(exit -> exitsMap.put(exit.getDirection(),exit.getRoom()));
+        Arrays.stream(exits)
+                .sequential()
+                .forEach(exit -> {
+                    if(exit.getRoom() == room) throw new RoomExitIsItselfException(room + " exit at " + exit.getDirection() + " cannot be " + exit.getRoom());
+                    exitsMap.put(exit.getDirection(),exit.getRoom());
+                });
         gameMap.put(room, exitsMap);
     }
     Map getExits(RoomType room) {

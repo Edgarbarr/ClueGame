@@ -26,12 +26,6 @@ public class Game {
         actionPrompt.append("Press 5: Quit.\n");
 
         generateGame();
-        hp.setCurrentRoom(RoomType.BALLROOM);
-        createGameMap();
-        System.out.println("Welcome to clue");
-        playerPause();
-        System.out.println("A crazy mystery game its pretty cool");
-        playerPause();
 
         int choice;
         Predicate<Integer> validRange = integer -> 0 <= integer && integer <= 4;
@@ -39,13 +33,13 @@ public class Game {
         while(true) {
             System.out.println("\u001B[35m"+"Choose your action");
             choice = playerChoice(validRange, actionPrompt.toString());
+            scanner.nextLine();
             switch(choice) {
                 case 0 -> askPlayerGuess();
                 case 1 -> offerMoveToPlayer(hp.getCurrentRoom());
                 case 2 -> checkForClues();
                 case 3 -> checkJournal();
-                case 4 -> printMap();
-                case 5 -> quit();
+                case 4 -> quit();
                 default -> System.out.println("thats not something you can do");
             }
         }
@@ -54,8 +48,12 @@ public class Game {
 
     }
     private void generateGame() {
-//        Room room = new Room();
-//        rooms = Room.generateRooms();
+        createGameMap();
+        hp.setCurrentRoom(RoomType.BALLROOM);
+        System.out.println("Welcome to clue");
+        playerPause();
+        System.out.println("A crazy mystery game its pretty cool");
+        playerPause();
     }
     private Guess askPlayerGuess(){
 
@@ -94,14 +92,22 @@ public class Game {
     private void offerMoveToPlayer(RoomType playerRoom) {
         System.out.println("Where would you like to go");
         Map<String, RoomType> currentExits = gameMap.getExits(playerRoom);
+
         String directionInput = "";
         boolean validInput = false;
         while(!validInput) {
+
+            if(currentExits == null) {
+                System.out.println("That room doesn't exist");
+                break;
+            }
+
             try {
                 System.out.println("Current location: " + hp.getCurrentRoom());
-                System.out.println(hp.getCurrentRoom());
+                System.out.println(hp.getCurrentRoom().getDescription());
                 System.out.println(currentExits);
-                scanner.nextLine();
+
+
                 directionInput = scanner.nextLine().toUpperCase();
                 if(!currentExits.keySet().contains(directionInput)) {
                     throw new InputMismatchException();
@@ -165,6 +171,7 @@ public class Game {
         listOptions.append("Press 0: Weapons\n");
         listOptions.append("Press 1: RolePlayers\n");
         listOptions.append("Press 2: Rooms\n");
+
         Predicate<Integer> journalRange = integer -> 0 <= integer || integer >= 2;
         int choice = playerChoice(journalRange, listOptions.toString());
 

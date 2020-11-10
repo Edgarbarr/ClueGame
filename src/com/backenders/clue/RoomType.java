@@ -10,8 +10,8 @@ public enum RoomType {
     HALL("Connects to all the rooms. There is an umbrella stand by the main entry."),
     LOUNGE("Comfy chairs, people lounging and chatting"),
     DINING_ROOM("A large table filled with dirty dishes and remanents of the meal. Is a butter knife missing?"),
-    CELLAR("Well stocked with aging and drink now wines, Scotts Whisky, Carribean Rum, and top shelf Tequila");
-//    SHOWER_ROOM("All good murders happen in the shower. Would you like to linger for one?");
+    CELLAR("Well stocked with aging and drink now wines, Scotts Whisky, Carribean Rum, and top shelf Tequila"),
+    SHOWER_ROOM("All good murders happen in the shower. Would you like to linger for one?");
 
     private final String name;
 
@@ -19,13 +19,6 @@ public enum RoomType {
         this.name = name;
     }
 
-
-    public String toString() {
-        return this.name;
-
-
-
-    }
     String getDescription() {
         return "\u001B[36m" + name + "\u001B[32m";
 

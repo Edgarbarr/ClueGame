@@ -25,9 +25,6 @@ public class Player {
 
         // Business Methods
 
-
-
-
         // Accessor Methods
         public Weapon getWeaponGuess() {
             return weaponGuess;
