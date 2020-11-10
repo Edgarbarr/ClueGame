@@ -37,7 +37,7 @@ public class Game {
             switch(choice) {
                 case 0 -> askPlayerGuess();
                 case 1 -> offerMoveToPlayer(hp.getCurrentRoom());
-                case 2 -> checkForClues();
+//                case 2 -> checkForClues();
                 case 3 -> checkJournal();
                 case 4 -> quit();
                 default -> System.out.println("thats not something you can do");
@@ -185,10 +185,10 @@ public class Game {
         }
     }
 
-    public Clue checkForClues() {
-        System.out.println("You found a clue");
-        return new Clue();
-    }
+//    public Clue checkForClues() {
+//        System.out.println("You found a clue");
+//        return new Clue();
+//    }
     private void createGameMap() {
             gameMap.setRoom(RoomType.KITCHEN, new Exit("N", RoomType.LIBRARY), new Exit("E", RoomType.BALLROOM));
             gameMap.setRoom(RoomType.BALLROOM, new Exit("N", RoomType.DINING_ROOM), new Exit("W", RoomType.KITCHEN), new Exit("E", RoomType.BILLIARD_ROOM));
