@@ -1,73 +1,126 @@
 package com.backenders.clue;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-class GameMap {
-    private Map<RoomType, Map<String, RoomType>> gameMap;
+public final class GameMap {
+    final Map<RoomType, Map<String, RoomType>> gameMap;
 
-    public GameMap() {
-        gameMap = new HashMap<>();
-        createGameMap();
+    private GameMap(Builder builder) {
+        gameMap = builder.gameMap;
     }
-    public void setRoom(RoomType room, Exit ...exits) {
-        Map<String, RoomType> exitsMap = new HashMap<>();
-        Arrays.stream(exits)
-                .sequential()
-                .forEach(exit -> {
-                    if(exit.getRoom() == room) throw new RoomExitIsItselfException(room + " exit at " + exit.getDirection() + " cannot be " + exit.getRoom());
-                    exitsMap.put(exit.getDirection(),exit.getRoom());
+
+    public Map<String, RoomType> getExits(RoomType roomType) {
+        return gameMap.get(roomType);
+    }
+
+    public static class Builder {
+        private final Map<RoomType, Map<String, RoomType>> gameMap;
+        private final List<Room> roomList = new ArrayList<>();
+
+        public Builder() {
+            gameMap = new HashMap<>();
+        }
+
+        class Exit {
+            String direction;
+            RoomType roomType;
+
+            Exit(String direction, RoomType roomType) {
+                this.direction = direction;
+                this.roomType = roomType;
+            }
+        }
+
+        class Room {
+            RoomType type;
+            List<Exit> exitList = new ArrayList<>();
+            private final Builder builder;
+
+            Room(RoomType type, Builder builder) {
+                this.type = type;
+                this.builder = builder;
+            }
+
+            Room addExit(String direction, RoomType room) {
+                exitList.add(new Exit(direction, room));
+                return this;
+            }
+
+            Room nextRoom(RoomType room) {
+                return builder.createRoom(room);
+            }
+
+            GameMap build() {
+                return builder.build();
+            }
+        }
+
+        public Room createRoom(RoomType type) {
+            Room newRoom = new Room(type, this);
+            roomList.add(newRoom);
+            return newRoom;
+        }
+
+        public GameMap build() {
+            roomList.forEach(room -> {
+                Map<String, RoomType> exitsMap = new HashMap<>();
+                room.exitList.forEach(exit -> {
+                    if (exit.roomType == room.type)
+                        throw new RoomExitIsItselfException(room.type + " exit at " + exit.direction + " is " + exit.roomType);
+                    exitsMap.put(exit.direction, exit.roomType);
                 });
-        gameMap.put(room, exitsMap);
-    }
-    public void setExit(String direction, RoomType room) {
+                gameMap.put(room.type, exitsMap);
+            });
+            return new GameMap(this);
+        }
 
+        public Builder generateStandardMap() {
+            this.createRoom(RoomType.KITCHEN)
+                    .addExit("N", RoomType.LIBRARY)
+                    .addExit("E", RoomType.BALLROOM)
+
+                    .nextRoom(RoomType.BALLROOM)
+                    .addExit("N", RoomType.DINING_ROOM)
+                    .addExit("E", RoomType.BILLIARD_ROOM)
+                    .addExit("W", RoomType.KITCHEN)
+
+                    .nextRoom(RoomType.BILLIARD_ROOM)
+                    .addExit("N", RoomType.BEDROOM)
+                    .addExit("W", RoomType.BALLROOM)
+
+                    .nextRoom(RoomType.LIBRARY)
+                    .addExit("N", RoomType.LOUNGE)
+                    .addExit("NE", RoomType.HALL)
+                    .addExit("SE", RoomType.BEDROOM)
+                    .addExit("S", RoomType.KITCHEN)
+
+                    .nextRoom(RoomType.BEDROOM)
+                    .addExit("N", RoomType.HALL)
+                    .addExit("S", RoomType.BILLIARD_ROOM)
+                    .addExit("W", RoomType.LIBRARY)
+
+                    .nextRoom(RoomType.HALL)
+                    .addExit("N", RoomType.CELLAR)
+                    .addExit("S", RoomType.BEDROOM)
+                    .addExit("W", RoomType.LIBRARY)
+
+                    .nextRoom(RoomType.LOUNGE)
+                    .addExit("E", RoomType.DINING_ROOM)
+                    .addExit("S", RoomType.LIBRARY)
+
+                    .nextRoom(RoomType.DINING_ROOM)
+                    .addExit("E", RoomType.CELLAR)
+                    .addExit("S", RoomType.BALLROOM)
+                    .addExit("W", RoomType.LOUNGE)
+
+                    .nextRoom(RoomType.CELLAR)
+                    .addExit("S", RoomType.HALL)
+                    .addExit("W", RoomType.DINING_ROOM);
+            return this;
+        }
     }
 
-    Map getExits(RoomType room) {
-        return gameMap.get(room);
-    }
-    private void createGameMap() {
-        setRoom(RoomType.KITCHEN, new Exit("N", RoomType.LIBRARY), new Exit("E", RoomType.BALLROOM));
-        setRoom(RoomType.BALLROOM, new Exit("N", RoomType.DINING_ROOM), new Exit("W", RoomType.KITCHEN), new Exit("E", RoomType.BILLIARD_ROOM));
-        setRoom(RoomType.BILLIARD_ROOM, new Exit("N", RoomType.BEDROOM), new Exit("W", RoomType.BALLROOM));
-        setRoom(RoomType.LIBRARY, new Exit("S", RoomType.KITCHEN), new Exit("N", RoomType.LOUNGE), new Exit("SE", RoomType.BEDROOM), new Exit("NE", RoomType.HALL));
-        setRoom(RoomType.BEDROOM, new Exit("N",RoomType.HALL), new Exit("S", RoomType.BILLIARD_ROOM), new Exit("W", RoomType.LIBRARY));
-        setRoom(RoomType.HALL, new Exit("S", RoomType.BEDROOM), new Exit("N", RoomType.CELLAR), new Exit("W", RoomType.LIBRARY));
-        setRoom(RoomType.LOUNGE, new Exit("E", RoomType.DINING_ROOM), new Exit("S", RoomType.LIBRARY));
-        setRoom(RoomType.DINING_ROOM, new Exit("S", RoomType.BALLROOM), new Exit("W", RoomType.LOUNGE), new Exit("E", RoomType.CELLAR));
-        setRoom(RoomType.CELLAR, new Exit("S", RoomType.HALL), new Exit("W", RoomType.DINING_ROOM));
-    }
-    private void createExits() {
-
-    }
-
-
-    //    void printMap() {
-//        Formatter map = new Formatter();
-//        map.format("#################################################\n");
-//        map.format("#               #               #               #\n");
-//        map.format("#               #               #               #\n");
-//        map.format("#%15s"+"#%15s"+"#%15s#\n", Room.values()[6], Room.values()[7], Room.values()[8]);
-//        map.format("#               #               #               #\n");
-//        map.format("#               #               #               #\n");
-//        map.format("#################################################\n");
-//        map.format("#               #               #               #\n");
-//        map.format("#               #               #               #\n");
-//        map.format("#%15s"+"#     CLUE      #################\n", Room.values()[3]);
-//        map.format("#               #               #               #\n");
-//        map.format("#               #               #               #\n");
-//        map.format("#################################################\n");
-//        map.format("#               #               #               #\n");
-//        map.format("#               #               #               #\n");
-//        map.format("#%15s"+"#%15s"+"#%15s#\n", Room.values()[0], Room.values()[1], Room.values()[2]);
-//        map.format("#               #               #               #\n");
-//        map.format("#               #               #               #\n");
-//        map.format("#################################################\n");
-//        System.out.println(map);
-//
-//
-//
-//    }
 }

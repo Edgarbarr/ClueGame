@@ -1,43 +1,19 @@
 package com.backenders.clue;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-class GameMapTest {
-    GameMap gameMap;
-    @BeforeEach
-    void setUp() {
-        gameMap = new GameMap();
-    }
-    @Test
-    void setRoom_whenGivenAnExitThatMatchesTheRoom_throwsRoomExitIsItselfException() {
-        Exception e = assertThrows(RoomExitIsItselfException.class, () -> gameMap.setRoom(RoomType.KITCHEN, new Exit("N", RoomType.KITCHEN)));
-        assertEquals("KITCHEN exit at N cannot be KITCHEN", e.getMessage());
+import org.junit.Test;
+import org.junit.Assert;
+public class GameMapTest {
+    @Test(expected = RoomExitIsItselfException.class)
+    public void build_whenARoomIsGivenItselfAsAnExit_shouldThrowRoomExitIsItselfException() {
+        GameMap gameMap = new GameMap.Builder()
+                .createRoom(RoomType.LIBRARY)
+                .addExit("N", RoomType.LIBRARY)
+                .build();
     }
 
     @Test
-    void getExits_whenGivenAValidRoom_returnsMapOfItsAssignedExits() {
-        RoomType playerRoom = RoomType.DINING_ROOM;
-        gameMap.setRoom(RoomType.DINING_ROOM, new Exit("N",RoomType.KITCHEN));
-        Map<String, RoomType> validExit = new HashMap<>();
-        validExit.put("N", RoomType.KITCHEN);
+    public void build_whenGeneratingAStandardMap_shouldReturn9Rooms() {
+        GameMap gameMap = new GameMap.Builder().generateStandardMap().build();
 
-        assertEquals(validExit, gameMap.getExits(playerRoom));
-    }
-
-    @Test
-    void getExits_whenGivenAnInvalidRoom_returnsNull() {
-        RoomType invalidRoom = RoomType.SHOWER_ROOM;
-        gameMap.setRoom(RoomType.DINING_ROOM, new Exit("N",RoomType.KITCHEN));
-        assertNull(gameMap.getExits(invalidRoom));
-    }
-
-    @Test
-    void name() {
     }
 }

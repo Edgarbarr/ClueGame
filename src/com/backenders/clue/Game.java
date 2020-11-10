@@ -11,7 +11,7 @@ public class Game {
     private Solution solution;
     private Player hp = new Player();
     private Stories stories;
-    private GameMap gameMap = new GameMap();
+    private GameMap gameMap = new GameMap.Builder().generateStandardMap().build();
     private Scanner scanner = new Scanner(System.in);
 
 //    private Thread bRoleThread;
