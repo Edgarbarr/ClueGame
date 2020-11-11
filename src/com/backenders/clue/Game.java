@@ -50,12 +50,12 @@ public class Game {
     }
     private void generateGame() throws IOException {
         hp.setCurrentRoom(RoomType.BALLROOM);
-        clue = new Clue();
-        clue.fileReadWepsClues();
-//        clue.getWepClue();
-        stories = new Stories();
-        stories.welcomeMessage();
-        stories.menu();
+//        clue = new Clue();
+//        clue.fileReadWepsClues();
+////        clue.getWepClue();
+//        stories = new Stories();
+//        stories.welcomeMessage();
+//        stories.menu();
         playerPause();
         System.out.println("A crazy mystery game its pretty cool");
         playerPause();
