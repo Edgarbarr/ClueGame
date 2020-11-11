@@ -46,24 +46,20 @@ public class Game {
     }
     private void generateGame() throws IOException {
         hp.setCurrentRoom(RoomType.BALLROOM);
-<<<<<<< Updated upstream
+
 //        clue = new Clue();
 //        clue.fileReadWepsClues();
 ////        clue.getWepClue();
 //        stories = new Stories();
 //        stories.welcomeMessage();
 //        stories.menu();
-        playerPause();
-        System.out.println("A crazy mystery game its pretty cool");
-        playerPause();
 
 
-=======
         prompter.info("Welcome to clue");
         prompter.promptPause();
         prompter.info("A crazy mystery game its pretty cool");
         prompter.promptPause();
->>>>>>> Stashed changes
+
     }
 
     private Guess askPlayerGuess(){
