@@ -46,6 +46,7 @@ public class Game {
     }
     private void generateGame() throws IOException {
         hp.setCurrentRoom(RoomType.BALLROOM);
+<<<<<<< Updated upstream
 
 //        clue = new Clue();
 //        clue.fileReadWepsClues();
@@ -55,11 +56,16 @@ public class Game {
 //        stories.menu();
 
 
+=======
+>>>>>>> Stashed changes
         prompter.info("Welcome to clue");
         prompter.promptPause();
         prompter.info("A crazy mystery game its pretty cool");
         prompter.promptPause();
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     }
 
     private Guess askPlayerGuess(){
