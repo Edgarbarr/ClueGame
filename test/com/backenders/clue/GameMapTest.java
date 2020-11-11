@@ -2,23 +2,16 @@ package com.backenders.clue;
 
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.Map;
 
 import static org.junit.Assert.*;
 public class GameMapTest {
-    @Test(expected = RoomExitIsItselfException.class)
-    public void build_whenARoomIsGivenItselfAsAnExit_shouldThrowRoomExitIsItselfException() {
-        GameMap gameMap = new GameMap.Builder()
-                .createRoom(RoomType.LIBRARY)
-                .addExit("N", RoomType.LIBRARY)
-                .build();
-    }
 
     @Test
     public void build_whenGeneratingAStandardMap_shouldReturnRoomsWithProperExits() {
 
         GameMap gameMap = new GameMap.Builder().generateStandardMap().build();
+
         Map<String, RoomType> kitchenExits = gameMap.getExits(RoomType.KITCHEN);
         Map<String, RoomType> ballroomExits = gameMap.getExits(RoomType.BALLROOM);
         Map<String, RoomType> billiardRoomExits = gameMap.getExits(RoomType.BILLIARD_ROOM);
@@ -63,18 +56,39 @@ public class GameMapTest {
         assertSame(cellarExits.get("W"), RoomType.DINING_ROOM);
     }
 
-    @Test
-    public void builder_when() {
+    @Test(expected = InvalidGameMapException.class)
+    public void build_whenBuildingAMapWhereAllRoomsDoNotConnect_shouldThrowInvalidGameMapException() {
         GameMap gameMap = new GameMap.Builder()
                 .createRoom(RoomType.LIBRARY)
-                .addExit("S", RoomType.BALLROOM)
-                .addExit("E", RoomType.BEDROOM)
-                .nextRoom(RoomType.BALLROOM)
-                .addExit("N", RoomType.LIBRARY)
-                .addExit("E", RoomType.BEDROOM)
+                .addExit("S", RoomType.BEDROOM)
                 .nextRoom(RoomType.BEDROOM)
                 .addExit("N", RoomType.LIBRARY)
+                .nextRoom(RoomType.DINING_ROOM)
                 .addExit("S", RoomType.BALLROOM)
+                .nextRoom(RoomType.BALLROOM)
+                .addExit("N", RoomType.DINING_ROOM)
+                .build();
+    }
+
+    @Test(expected = InvalidGameMapException.class)
+    public void build_whenBuildingAMapWhereARoomExitLeadsToItself_shouldThrowInvalidGameMapException () {
+        GameMap gameMap = new GameMap.Builder()
+                .createRoom(RoomType.LIBRARY)
+                .addExit("N", RoomType.LIBRARY)
+                .build();
+    }
+
+    @Test(expected = InvalidGameMapException.class)
+    public void build_whenBuildingAMapWhereARoomHasNoExits_shouldThrowInvalidGameMapException() {
+        GameMap gameMap = new GameMap.Builder()
+                .createRoom(RoomType.LIBRARY)
+                .addExit("S", RoomType.DINING_ROOM)
+                .addExit("N", RoomType.BALLROOM)
+                .nextRoom(RoomType.DINING_ROOM)
+                .addExit("N", RoomType.LIBRARY)
+                .addExit("W", RoomType.CELLAR)
+                .nextRoom(RoomType.BALLROOM)
+                .addExit("S", RoomType.LIBRARY)
                 .build();
     }
 }
