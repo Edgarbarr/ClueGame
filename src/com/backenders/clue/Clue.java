@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Clue {
+ public class Clue {
     // Fields - clue consists of String text, Weapon, RolePlayer
     private String weaponClue = "";
     private String rolePlayerClue = "";
