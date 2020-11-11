@@ -1,6 +1,8 @@
 package com.backenders.clue;
 
-public class Solution {
+public class
+
+Solution {
     private RolePlayer murderer;
     private Weapon murderWeapon;
 
@@ -12,3 +14,4 @@ public class Solution {
    }
 
 }
+
