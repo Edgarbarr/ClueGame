@@ -52,9 +52,10 @@ public class WeaponClue {
         return wep;
     }
 
-    public void theWeapon() throws IOException {
+    public Object theWeapon() throws IOException {
         String yourWeaponClue = fileReadWepsClues() + " " + listWeapons() + ".";
         System.out.println(yourWeaponClue);
 
+        return null;
     }
 }

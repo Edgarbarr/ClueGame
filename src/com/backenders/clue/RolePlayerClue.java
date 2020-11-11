@@ -52,10 +52,11 @@ public class RolePlayerClue {
         return rplayer;
     }
 
-    public void thePerp() throws IOException {
+    public Object thePerp() throws IOException {
         String yourRolePlayerClue = listRolePlayers() + fileReaderRPClues();
         System.out.println(yourRolePlayerClue);
 
+        return null;
     }
 
 }

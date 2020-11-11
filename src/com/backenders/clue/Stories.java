@@ -31,7 +31,6 @@ public class Stories {
                 }
             }
         }
-
     }
 
     public void menu() {
@@ -51,8 +50,6 @@ public class Stories {
             }
         }
     }
-
-
 }
 
 
