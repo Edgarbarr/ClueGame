@@ -14,7 +14,7 @@ public class Stories {
 
 
     // Business Methods
-    public static void welcomeMessage() {
+    public void welcomeMessage() {
 
         BufferedReader reader = null;
         try {
@@ -34,7 +34,7 @@ public class Stories {
 
     }
 
-    public static void menu() {
+    public void menu() {
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader("menu.txt"));
@@ -51,14 +51,7 @@ public class Stories {
             }
         }
     }
-    // Accessor Methods aka Getters and Setters
 
-    public String getWelcome() {
-        return welcome;
-    }
-
-
-    // toString
 
 }
 

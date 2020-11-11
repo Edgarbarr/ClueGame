@@ -1,5 +1,6 @@
 package com.backenders.clue;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -16,7 +17,7 @@ public class Game {
 
 //    private Thread bRoleThread;
 
-    public void start(){
+    public void start() throws IOException {
         StringBuilder actionPrompt = new StringBuilder();
         actionPrompt.append("Press 0: Take a guess.\n");
         actionPrompt.append("Press 1: Move to a different room.\n");
@@ -47,14 +48,18 @@ public class Game {
     public void displayRules() {
 
     }
-    private void generateGame() {
+    private void generateGame() throws IOException {
         hp.setCurrentRoom(RoomType.BALLROOM);
+        clue = new Clue();
+        clue.fileReadWepsClues();
+//        clue.getWepClue();
+        stories = new Stories();
         stories.welcomeMessage();
-//        System.out.println("Welcome to clue");
+        stories.menu();
         playerPause();
         System.out.println("A crazy mystery game its pretty cool");
         playerPause();
-        stories.menu();
+
 
     }
     private Guess askPlayerGuess(){
