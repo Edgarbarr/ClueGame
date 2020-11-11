@@ -1,5 +1,6 @@
 package com.backenders.clue;
 
+
 import javax.management.relation.Role;
 import java.sql.SQLOutput;
 import java.util.Random;
@@ -39,3 +40,4 @@ public class Solution {
     }
 
 }
+
