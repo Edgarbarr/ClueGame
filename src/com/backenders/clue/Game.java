@@ -14,9 +14,7 @@ public class Game {
     private Player hp = new Player();
     private Stories stories;
     private GameMap gameMap = new GameMap.Builder().generateStandardMap().build();
-    private Scanner scanner = new Scanner(System.in);
-
-//    private Thread bRoleThread;
+    private Prompter prompter = new Prompter(new Scanner(System.in));
 
     public void start() throws IOException {
         StringBuilder actionPrompt = new StringBuilder();
@@ -24,8 +22,7 @@ public class Game {
         actionPrompt.append("Press 1: Move to a different room.\n");
         actionPrompt.append("Press 2: Look for clues.\n");
         actionPrompt.append("Press 3: Check your journal.\n");
-        actionPrompt.append("Press 4: Check map\n");
-        actionPrompt.append("Press 5: Quit.\n");
+        actionPrompt.append("Press 4: Quit.\n");
 
         generateGame();
 
@@ -33,9 +30,8 @@ public class Game {
         Predicate<Integer> validRange = integer -> 0 <= integer && integer <= 4;
 
         while(true) {
-            System.out.println("\u001B[35m"+"Choose your action");
-            choice = playerChoice(validRange, actionPrompt.toString());
-            scanner.nextLine();
+            prompter.info("Please choose your action");
+            choice = prompter.promptIntInput(actionPrompt.toString(), validRange, "Please use valid ");
             switch(choice) {
                 case 0 -> askPlayerGuess();
                 case 1 -> offerMoveToPlayer(hp.getCurrentRoom());
@@ -51,27 +47,23 @@ public class Game {
     }
     private void generateGame() throws IOException {
         hp.setCurrentRoom(RoomType.BALLROOM);
-        wClue = new WeaponClue();
-        wClue.theWeapon();
-        rpClue = new RolePlayerClue();
-        rpClue.thePerp();
-//        clue = new Clue();
-//        clue.fileReadWepsClues();
-//        clue.getWepClue();
         stories = new Stories();
         stories.welcomeMessage();
         stories.menu();
-        playerPause();
         System.out.println("A crazy mystery game its pretty cool");
-        playerPause();
 
+
+        prompter.info("Welcome to clue");
+        prompter.promptPause();
+        prompter.info("A crazy mystery game its pretty cool");
+        prompter.promptPause();
 
     }
+
     private Guess askPlayerGuess(){
 
         Predicate<Integer> validRange = integer -> 0 <= integer && integer <= Weapon.values().length;
-
-        System.out.println("Whats your guess?");
+        prompter.info("Whats your guess?");
 
         StringBuilder askPlayerForMurderer = new StringBuilder();
         askPlayerForMurderer.append("Choose the murderer.\n");
@@ -83,17 +75,13 @@ public class Game {
             askPlayerForMurderer.append("Press " + rp.ordinal() + ": "+ rp.toString()+ " \n");
         }
         for(Weapon wp : Weapon.values()) {
-            askPlayerForWeapon.append("Press " + wp.ordinal() + ": to pick "+ wp.toString() + "\n");
+            askPlayerForWeapon.append("Press " + wp.ordinal()+ ": "+ wp.toString() + "\n");
         }
 
-        int murdererGuess = playerChoice(validRange, askPlayerForMurderer.toString());
-
-        int weaponGuess = playerChoice(validRange, askPlayerForWeapon.toString());
-
-        System.out.println("You guess that "+ RolePlayer.values()[murdererGuess] + " did it with a " +Weapon.values()[weaponGuess]);
+        int murdererGuess = prompter.promptIntInput(askPlayerForMurderer.toString(), validRange, "Please choose a valid number");
+        int weaponGuess = prompter.promptIntInput(askPlayerForWeapon.toString(), validRange, "Please choose a valid number");
+        prompter.info("You guess that "+ RolePlayer.values()[murdererGuess] + " did it with a " +Weapon.values()[weaponGuess]).toUpperCase();
         return new Guess();
-//        return new Guess(RolePlayer.values()[murdererGuess], Weapon.values()[weaponGuess]);
-
     };
 
     private boolean checkSolutions(Guess playerGuess){
@@ -102,33 +90,39 @@ public class Game {
     };
 
     private void offerMoveToPlayer(RoomType playerRoom) {
-        System.out.println("Where would you like to go");
+        prompter.info("Where would you like to go");
+
         Map<String, RoomType> currentExits = gameMap.getExits(playerRoom);
+        StringBuilder playerMovePrompt = new StringBuilder();
+        playerMovePrompt.append("Current location: " + hp.getCurrentRoom()+"\n");
+        playerMovePrompt.append(hp.getCurrentRoom().getDescription()+ "\n");
+        playerMovePrompt.append(currentExits);
 
-        String directionInput = "";
-        boolean validInput = false;
-        while(!validInput) {
-
-            if(currentExits == null) {
-                System.out.println("That room doesn't exist");
-                break;
-            }
-
-            try {
-                System.out.println("Current location: " + hp.getCurrentRoom());
-                System.out.println(hp.getCurrentRoom().getDescription());
-                System.out.println(currentExits);
-
-
-                directionInput = scanner.nextLine().toUpperCase();
-                if(!currentExits.keySet().contains(directionInput)) {
-                    throw new InputMismatchException();
-                }
-                validInput = true;
-            } catch (InputMismatchException e) {
-                System.out.println("\u001B[31m"+"Please pick a valid input");
-            }
-        }
+        Predicate playerMovePredicate = (input) -> !currentExits.keySet().contains(input);
+        String directionInput = prompter.promptStringInput(playerMovePrompt.toString(), playerMovePredicate, "Please pick valid input");
+//        boolean validInput = false;
+//
+//        while(!validInput) {
+//            if(currentExits == null) {
+//                System.out.println("That room doesn't exist");
+//                break;
+//            }
+//
+//            try {
+//                System.out.println("Current location: " + hp.getCurrentRoom());
+//                System.out.println(hp.getCurrentRoom().getDescription());
+//                System.out.println(currentExits);
+//
+//
+//                directionInput = scanner.nextLine().toUpperCase();
+//                if(!currentExits.keySet().contains(directionInput)) {
+//                    throw new InputMismatchException();
+//                }
+//                validInput = true;
+//            } catch (InputMismatchException e) {
+//                System.out.println("\u001B[31m"+"Please pick a valid input");
+//            }
+//        }
         hp.setCurrentRoom(currentExits.get(directionInput.toUpperCase()));
         System.out.println(hp.getCurrentRoom());
 
@@ -153,29 +147,6 @@ public class Game {
         System.out.println("Thanks for playing have a nice day");
         System.exit(0);
     }
-    private void playerPause() {
-        System.out.println("Press enter to continue");
-        scanner.nextLine();
-    }
-    private int playerChoice(Predicate validRange, String choicePrompt) {
-        int choice = 0;
-        boolean validChoice = false;
-
-        while(!validChoice) {
-            System.out.println(choicePrompt);
-            try {
-                choice = scanner.nextInt();
-                if(!validRange.test(choice)) {
-                    throw new InputMismatchException();
-                }
-                validChoice = true;
-            } catch(InputMismatchException e) {
-                scanner.nextLine();
-                System.out.println("\u001B[31m"+"Please chose a valid number");
-            }
-        }
-        return choice;
-    }
 
     private void checkJournal() {
         StringBuilder listOptions = new StringBuilder();
@@ -185,7 +156,7 @@ public class Game {
         listOptions.append("Press 2: Rooms\n");
 
         Predicate<Integer> journalRange = integer -> 0 <= integer || integer >= 2;
-        int choice = playerChoice(journalRange, listOptions.toString());
+        int choice = prompter.promptIntInput(listOptions.toString(),journalRange, "Please pick valid int");
 
         switch(choice) {
             case 0 -> listWeapons();
@@ -194,11 +165,5 @@ public class Game {
         }
     }
 
-   
-
-    private void printMap() {
-        scanner.nextLine();
-             playerPause();
-    }
     //    method(Stories.clueTemplates, WeaponList, RolePlayer);// chose how you want to implement clue making
 }
