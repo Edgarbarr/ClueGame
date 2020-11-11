@@ -47,7 +47,8 @@ public class Game {
     }
     private void generateGame() throws IOException {
         hp.setCurrentRoom(RoomType.BALLROOM);
-
+        Stories s = new Stories();
+        s.welcomeMessage();
         prompter.info("Welcome to clue");
         prompter.promptPause();
         prompter.info("A crazy mystery game its pretty cool");
