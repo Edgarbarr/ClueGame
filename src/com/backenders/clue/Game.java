@@ -9,6 +9,7 @@ public class Game {
     private Weapon weapons;
     private List<RoomType> rooms; //can be enum or class
     private Clue clue; //should we have a clue class or have clues in Game
+    private WeaponClue wClue;
     private Solution solution;
     private Player hp = new Player();
     private Stories stories;
@@ -50,8 +51,10 @@ public class Game {
     }
     private void generateGame() throws IOException {
         hp.setCurrentRoom(RoomType.BALLROOM);
-        clue = new Clue();
-        clue.fileReadWepsClues();
+        wClue = new WeaponClue();
+        wClue.theWeapon();
+//        clue = new Clue();
+//        clue.fileReadWepsClues();
 //        clue.getWepClue();
         stories = new Stories();
         stories.welcomeMessage();
