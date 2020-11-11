@@ -96,7 +96,7 @@ public final class GameMap {
         public GameMap build() {
             roomList.forEach(room -> {
 
-                Map<String, RoomType> exitsMap = new HashMap<>();
+                Map<String, RoomType> exitsMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
                 room.exitList.forEach(exit -> {
                     if (exit.roomType == room.type)

@@ -96,29 +96,7 @@ public class Game {
 
         Predicate playerMovePredicate = currentExits::containsKey;
         String directionInput = prompter.promptStringInput(playerMovePrompt.toString(), playerMovePredicate, "Please pick valid input");
-//        boolean validInput = false;
-//
-//        while(!validInput) {
-//            if(currentExits == null) {
-//                System.out.println("That room doesn't exist");
-//                break;
-//            }
-//
-//            try {
-//                System.out.println("Current location: " + hp.getCurrentRoom());
-//                System.out.println(hp.getCurrentRoom().getDescription());
-//                System.out.println(currentExits);
-//
-//
-//                directionInput = scanner.nextLine().toUpperCase();
-//                if(!currentExits.keySet().contains(directionInput)) {
-//                    throw new InputMismatchException();
-//                }
-//                validInput = true;
-//            } catch (InputMismatchException e) {
-//                System.out.println("\u001B[31m"+"Please pick a valid input");
-//            }
-//        }
+
         hp.setCurrentRoom(currentExits.get(directionInput.toUpperCase()));
         System.out.println(hp.getCurrentRoom());
 

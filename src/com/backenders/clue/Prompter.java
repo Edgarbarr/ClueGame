@@ -22,7 +22,7 @@ public class Prompter {
         while(!validInput) {
             System.out.println(Color.CYAN+prompt+Color.RESET);
             try {
-                input = scanner.nextLine().toUpperCase();
+                input = scanner.nextLine();
                 if(!validInputPattern.test(input)) {
                     throw new InputMismatchException();
                 }
@@ -54,8 +54,10 @@ public class Prompter {
         }
         return input;
     }
-    public void promptPause() {
-        System.out.println("Press enter to continue");
+    public String promptPause() {
+        String pausePrompt = "Press enter to continue";
+        System.out.println(pausePrompt);
         scanner.nextLine();
+        return pausePrompt;
     }
 }
