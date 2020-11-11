@@ -54,8 +54,10 @@ public class Prompter {
         }
         return input;
     }
-    public void promptPause() {
-        System.out.println("Press enter to continue");
+    public String promptPause() {
+        String pausePrompt = "Press enter to continue";
+        System.out.println(pausePrompt);
         scanner.nextLine();
+        return pausePrompt;
     }
 }
