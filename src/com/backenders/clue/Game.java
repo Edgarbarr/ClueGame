@@ -8,7 +8,6 @@ public class Game {
     private RolePlayer rolePlayers;
     private Weapon weapons;
     private List<RoomType> rooms; //can be enum or class
-    private Clue clue; //should we have a clue class or have clues in Game
     private WeaponClue wClue;
     private RolePlayerClue rpClue;
     private Solution solution;

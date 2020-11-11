@@ -48,12 +48,12 @@ public class RolePlayerClue {
         int index = rpList.size();
         int rand = (int) (Math.random() * index);
         String rplayer = "";
-        rplayer = rpList.get(rand).toString();
+        rplayer = rpList.get(rand).getRpName();
         return rplayer;
     }
 
     public void thePerp() throws IOException {
-        String yourRolePlayerClue = listRolePlayers() + " " +  fileReaderRPClues()+ ".";
+        String yourRolePlayerClue = listRolePlayers() + fileReaderRPClues();
         System.out.println(yourRolePlayerClue);
 
     }
