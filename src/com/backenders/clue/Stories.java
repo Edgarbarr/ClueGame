@@ -8,29 +8,52 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class Stories {
+    private String welcome;
+
+    // Constructor
 
 
+    // Business Methods
+    public void welcomeMessage() {
 
-    public static void main(String[] args) {
-        welcomeMessage();
-    }
-
-    public static void welcomeMessage () {
-
-        try (BufferedReader reader = new BufferedReader(new FileReader("welcome.txt"))) {
-            List<String> lines = new ArrayList<>();
-
-            String curLine = null;
-            while ((curLine = reader.readLine()) != null) {
-                lines.add(curLine);
-            }
-            for (String line : lines) {
-                System.out.println(line);
-            }
-        }
-        catch (IOException e) {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader("welcome.txt"));
+            Stream<String> lines = reader.lines();
+            lines.forEach(System.out::println);
+        } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException ignored) {
+                }
+            }
         }
 
     }
+
+    public void menu() {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader("menu.txt"));
+            Stream<String> lines = reader.lines();
+            lines.forEach(System.out::println);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException ignored) {
+                }
+            }
+        }
+    }
+
+
 }
+
+
+
