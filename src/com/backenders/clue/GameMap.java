@@ -1,12 +1,10 @@
 package com.backenders.clue;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class GameMap {
-    final Map<RoomType, Map<String, RoomType>> gameMap;
+    private final Map<RoomType, Map<String, RoomType>> gameMap;
 
     private GameMap(Builder builder) {
         gameMap = builder.gameMap;
@@ -64,6 +62,39 @@ public final class GameMap {
             return newRoom;
         }
 
+        private boolean checkGameMapValidity() {
+            Set<RoomType> allRooms = gameMap.keySet();
+            AtomicBoolean isValidMap = new AtomicBoolean(false);
+
+            allRooms.forEach(roomType -> {
+                Set<RoomType> visited = new TreeSet<>();
+                Map<String, RoomType> exitsMap = gameMap.get(roomType);
+
+                Stack<RoomType> stack = new Stack<>();
+                exitsMap.keySet().stream().forEach(direction -> {
+                    stack.push(exitsMap.get(direction));
+                });
+
+                while(!stack.empty()) {
+                    RoomType current = stack.pop();
+                    if(visited.contains(current)) {
+                        continue;
+                    } else {
+                        visited.add(current);
+                        Map<String, RoomType> currentExits = gameMap.get(current);
+                        currentExits.values().forEach(stack::push);
+                    }
+                    if(visited.equals(allRooms)){
+                        isValidMap.set(true);
+                        break;
+                    }
+                }
+
+
+            });
+            return isValidMap.get();
+        }
+
         public GameMap build() {
             roomList.forEach(room -> {
                 Map<String, RoomType> exitsMap = new HashMap<>();
@@ -74,6 +105,7 @@ public final class GameMap {
                 });
                 gameMap.put(room.type, exitsMap);
             });
+            System.out.println(checkGameMapValidity());
             return new GameMap(this);
         }
 
