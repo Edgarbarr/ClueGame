@@ -22,7 +22,7 @@ public class Prompter {
         while(!validInput) {
             System.out.println(Color.CYAN+prompt+Color.RESET);
             try {
-                input = scanner.nextLine();
+                input = scanner.nextLine().toUpperCase();
                 if(!validInputPattern.test(input)) {
                     throw new InputMismatchException();
                 }

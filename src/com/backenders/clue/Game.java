@@ -47,11 +47,6 @@ public class Game {
     }
     private void generateGame() throws IOException {
         hp.setCurrentRoom(RoomType.BALLROOM);
-        stories = new Stories();
-        stories.welcomeMessage();
-        stories.menu();
-        System.out.println("A crazy mystery game its pretty cool");
-
 
         prompter.info("Welcome to clue");
         prompter.promptPause();
@@ -98,7 +93,7 @@ public class Game {
         playerMovePrompt.append(hp.getCurrentRoom().getDescription()+ "\n");
         playerMovePrompt.append(currentExits);
 
-        Predicate playerMovePredicate = (input) -> !currentExits.keySet().contains(input);
+        Predicate playerMovePredicate = currentExits::containsKey;
         String directionInput = prompter.promptStringInput(playerMovePrompt.toString(), playerMovePredicate, "Please pick valid input");
 //        boolean validInput = false;
 //
