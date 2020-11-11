@@ -10,6 +10,7 @@ public class Game {
     private List<RoomType> rooms; //can be enum or class
     private Clue clue; //should we have a clue class or have clues in Game
     private WeaponClue wClue;
+    private RolePlayerClue rpClue;
     private Solution solution;
     private Player hp = new Player();
     private Stories stories;
@@ -53,6 +54,8 @@ public class Game {
         hp.setCurrentRoom(RoomType.BALLROOM);
         wClue = new WeaponClue();
         wClue.theWeapon();
+        rpClue = new RolePlayerClue();
+        rpClue.thePerp();
 //        clue = new Clue();
 //        clue.fileReadWepsClues();
 //        clue.getWepClue();

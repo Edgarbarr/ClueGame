@@ -26,10 +26,7 @@ public class WeaponClue {
                 int index = weplines.length;
                 int rand = (int) (Math.random() * index + 0);
                 randoChoice = weplines[rand];
-
-
             }
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -55,10 +52,9 @@ public class WeaponClue {
         return wep;
     }
 
-
     public void theWeapon() throws IOException {
-        String yourWeponClue = fileReadWepsClues() + " " + listWeapons() + ".";
-        System.out.println(yourWeponClue);
+        String yourWeaponClue = fileReadWepsClues() + " " + listWeapons() + ".";
+        System.out.println(yourWeaponClue);
 
     }
 }
