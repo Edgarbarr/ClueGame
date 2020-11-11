@@ -1,12 +1,19 @@
 package com.backenders.clue;
 
+import java.util.EnumSet;
+
 public class Player {
     private RoomType currentRoom;
     private String name;
 
     // Constructor
-    public Player() { // or Scanner?
+    public Player(String name, RoomType currentRoom) {
         this.name = name;
+
+    }
+
+    public Player() {
+
     }
 
     // Business Methods
@@ -15,31 +22,40 @@ public class Player {
     private class Guess {
         // Fields
         Weapon weaponGuess;
-        RolePlayer rolePlayerGuess;
+        RolePlayer murdererGuess;
 
         // Constructor
         public Guess(Weapon weapon, RolePlayer rolePlayer) {
             this.weaponGuess = weapon;
-            this.rolePlayerGuess = rolePlayer;
+            this.murdererGuess = rolePlayer;
         }
-
-        // Business Methods
 
         // Accessor Methods
         public Weapon getWeaponGuess() {
             return weaponGuess;
         }
 
-        public void setWeaponGuess(Weapon weapon) {
-            this.weaponGuess = weapon;
+        public void setWeaponGuess(Weapon weaponGuess) {
+
+            EnumSet<Weapon> weapons = EnumSet.allOf(Weapon.class);
+            // verify name of Weapons EnumSet in weapons
+            if (weapons.contains(weaponGuess)) {
+                this.weaponGuess = weaponGuess;
+            } else {
+                System.out.println("Please choose a valid weapon.");
+            }
         }
 
-        public RolePlayer getRolePlayerGuess() {
-            return rolePlayerGuess;
+        public RolePlayer getMurdererGuess() {
+            return murdererGuess;
         }
 
-        public void setRolePlayerGuess(RolePlayer rolePlayer) {
-            this.rolePlayerGuess = rolePlayer;
+        public void setMurdererGuess(RolePlayer murdererGuess) {
+            if (RolePlayer.rolePlayers.contains(murdererGuess)) {
+                this.murdererGuess = murdererGuess;
+            } else {
+                System.out.println("Please choose a valid character.");
+            }
         }
     }
 
@@ -50,16 +66,15 @@ public class Player {
 
     public void setName(String name) {
 
-        if (name.isBlank()){
+        if (name.isBlank()) {
             System.out.println("No blanks allowed. Please enter a player name:");
-        }
-        else{
-
+        } else {
+            this.name = name;
         }
     }
 
     public RoomType getCurrentRoom() {
-        return currentRoom;
+        return (RoomType) currentRoom;
     }
 
     public void setCurrentRoom(RoomType currentRoom) {

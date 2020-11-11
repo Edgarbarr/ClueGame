@@ -1,12 +1,10 @@
 package com.backenders.clue;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class GameMap {
-    final Map<RoomType, Map<String, RoomType>> gameMap;
+    private final Map<RoomType, Map<String, RoomType>> gameMap;
 
     private GameMap(Builder builder) {
         gameMap = builder.gameMap;
@@ -64,16 +62,50 @@ public final class GameMap {
             return newRoom;
         }
 
+        private boolean checkGameMapValidity() {
+            Set<RoomType> allRooms = gameMap.keySet();
+            AtomicBoolean isValidMap = new AtomicBoolean(false);
+
+            allRooms.forEach(room -> {
+                Set<RoomType> visited = new TreeSet<>();
+                Map<String, RoomType> exitsMap = gameMap.get(room);
+
+                Stack<RoomType> reachableRooms = new Stack<>();
+                exitsMap.keySet().stream().forEach(direction -> {
+                    reachableRooms.push(exitsMap.get(direction));
+                });
+
+                while(!reachableRooms.empty()) {
+                    RoomType currentRoom = reachableRooms.pop();
+                    if(visited.contains(currentRoom)) {
+                        continue;
+                    } else {
+                        visited.add(currentRoom);
+                        Map<String, RoomType> currentExits = gameMap.get(currentRoom);
+                        if(currentExits == null) throw new InvalidGameMapException(currentRoom + " has no valid exits");
+                        currentExits.values().forEach(reachableRooms::push);
+                    }
+                    if(visited.equals(allRooms)){
+                        isValidMap.set(true);
+                    }
+                }
+            });
+            return isValidMap.get();
+        }
+
         public GameMap build() {
             roomList.forEach(room -> {
+
                 Map<String, RoomType> exitsMap = new HashMap<>();
+
                 room.exitList.forEach(exit -> {
                     if (exit.roomType == room.type)
-                        throw new RoomExitIsItselfException(room.type + " exit at " + exit.direction + " is " + exit.roomType);
+                        throw new InvalidGameMapException(room.type + " exit at " + exit.direction + " is itself");
                     exitsMap.put(exit.direction, exit.roomType);
                 });
                 gameMap.put(room.type, exitsMap);
             });
+            if(!checkGameMapValidity()) throw new InvalidGameMapException("All Rooms not accessible");
             return new GameMap(this);
         }
 
