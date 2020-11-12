@@ -17,26 +17,27 @@ public class Stories {
         readerOfFiles(fileName);
     }
 
-    public void viewInstructions() {
-        String fileName = "viewInstructions.txt";
-        readerOfFiles(fileName);
-    }
-
-
     public void menu() {
         String fileName = "menu.txt";
         readerOfFiles(fileName);
     }
 
+    public void banner() {
+        String fileName = "skull.txt";
+        readerOfFiles(fileName);
+    }
+
+    public void smileyWin() {
+        String fileName = "smiley.txt";
+        readerOfFiles(fileName);
+    }
 
     public void readerOfFiles(String textDoc) {
-        StringBuilder message = new StringBuilder();
 
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(textDoc));
             Stream<String> lines = reader.lines();
-//            lines.forEach(line -> message.append(line.toString() + "\n"));
             lines.forEach(System.out::println);
 
         } catch (IOException e) {

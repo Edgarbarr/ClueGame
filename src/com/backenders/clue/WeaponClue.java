@@ -51,14 +51,14 @@ public class WeaponClue {
         wepList.remove(Solution.getMurderWeapon());
         int index = wepList.size() -1;
         int rand = (int) (Math.random() * index);
-        String wep = "";
+        String wep;
         wep = wepList.get(rand).toString();
         return wep;
     }
 
     public Object theWeapon() throws IOException {
         String yourWeaponClue = fileReadWepsClues() + " " + listWeapons() + ".";
-        System.out.println(yourWeaponClue);
+        System.out.println(Color.GREEN + yourWeaponClue + Color.RESET);
 
         return null;
     }

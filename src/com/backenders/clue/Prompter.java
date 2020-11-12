@@ -57,6 +57,7 @@ public class Prompter {
         }
         return input;
     }
+    // useful for pauses - might use later
     public String promptPause() {
         String pausePrompt = "Press enter to continue";
         System.out.println(pausePrompt);
