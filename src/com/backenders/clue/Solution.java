@@ -24,17 +24,14 @@ public class Solution {
     }
 
     public static RolePlayer generateMurderer() {
-        System.out.println("LLLLLLLLLLLLLL");
         murderer = RolePlayer.class.getEnumConstants()
                 [new Random().nextInt(RolePlayer.class.getEnumConstants().length)];
-        System.out.println(murderer);
         return murderer;
     }
 
     public static Weapon generateMurderWeapon() {
         murderWeapon = Weapon.class.getEnumConstants()
                 [new Random().nextInt(Weapon.class.getEnumConstants().length)];
-        System.out.println(murderWeapon);
         return murderWeapon;
     }
 

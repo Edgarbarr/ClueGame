@@ -50,7 +50,6 @@ public class RolePlayerClue {
         List<RolePlayer> rpList = Arrays.stream(RolePlayer.values()).sequential().collect(Collectors.toList());
         int index = rpList.size() -1;
         rpList.remove(Solution.getMurderer());
-        System.out.println(rpList);
         int rand = (int) (Math.random() * index);
         String rplayer = "";
         rplayer = rpList.get(rand).getRpName();

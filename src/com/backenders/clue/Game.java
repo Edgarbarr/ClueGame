@@ -62,10 +62,6 @@ public class Game {
         Stories s = new Stories();
         s.welcomeMessage();
 
-        prompter.info("Welcome to clue");
-        prompter.promptPause();
-        prompter.info("A crazy mystery game its pretty cool");
-        prompter.promptPause();
         Solution.generateMurderWeapon();
         Solution.generateMurderer();
 
