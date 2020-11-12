@@ -34,12 +34,8 @@ public enum RolePlayer {
 
     public void printRolePlayerList(Stream<RolePlayer> rpList) {
         RolePlayer.rpList()
-                .forEach(RolePlayer -> System.out.println(rpName + " " + charDescription));
-
-        // Or we can use an EnumSet because it is supposed to be faster
-        // and better than a map....
-//        EnumSet.allOf(RolePlayer.class)
-//                .forEach(System.out::println);
+                .map(RolePlayer::getRpName)
+                .forEach(System.out::println);
     }
 
     static EnumSet<RolePlayer> printRolePlayers() {
@@ -49,11 +45,16 @@ public enum RolePlayer {
     }
 
     // Accessor Methods
-    public String getCharDescription() {
+    protected String getCharDescription() {
         return charDescription;
     }
 
-    public String getRpName() {
+    protected String getRpName() {
+        return rpName;
+    }
+
+    @Override
+    public String toString() {
         return rpName;
     }
 

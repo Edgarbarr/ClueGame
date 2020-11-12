@@ -10,7 +10,7 @@ public class Game {
     private List<RoomType> rooms; //can be enum or class
     private WeaponClue wClue;
     private RolePlayerClue rpClue;
-    private Solution solution;
+    private Solution solution = new Solution();
     private Player hp = new Player();
     private Stories stories;
     private GameMap gameMap = new GameMap.Builder().generateStandardMap().build();
@@ -24,6 +24,7 @@ public class Game {
 
 
         int choice;
+
         Stories s = new Stories();
         Predicate<Integer> validRange = integer -> 1 <= integer && integer <= 5;
 
@@ -38,6 +39,7 @@ public class Game {
                 case 3 -> listRolePlayers();
                 case 4 -> listWeapons();
                 case 5 -> listRooms();
+
             }
         }
 
@@ -59,6 +61,37 @@ public class Game {
         hp.setCurrentRoom(RoomType.BALLROOM);
         Stories s = new Stories();
         s.welcomeMessage();
+
+        prompter.info("Welcome to clue");
+        prompter.promptPause();
+        prompter.info("A crazy mystery game its pretty cool");
+        prompter.promptPause();
+        Solution.generateMurderWeapon();
+        Solution.generateMurderer();
+
+
+    }
+    public void letPlayerMakeGuess(){
+        System.out.println("Would you like to make a guess?");
+        System.out.println("Press 1 if yes");
+        System.out.println("Press 2 if no");
+        Predicate<Integer> isValid = input -> input == 1 || input== 2;
+        int choice = prompter.promptIntInput("", isValid, "Not a valid input.");
+        if (choice == 1) {
+            Guess playerGuess = hp.askPlayerGuess();
+            boolean isPlayerRight = solution.checkSolution(playerGuess);
+            if (isPlayerRight) {
+                System.out.println("Good job");
+                System.exit(0);
+            } else {
+                System.out.println("Wrong");
+            }
+        }else if (choice == 2) {
+            System.out.println("OK, fine then.");
+        }
+    }
+    private boolean checkSolutions(Guess playerGuess){
+
         s.menu();
 
 
@@ -91,6 +124,7 @@ public class Game {
     ;
 
     private boolean checkSolutions(Guess playerGuess) {
+
 //        return Solution.checkSolution(playerGuess);
         return false;
     }
