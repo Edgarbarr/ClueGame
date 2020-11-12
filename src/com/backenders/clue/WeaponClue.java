@@ -48,7 +48,8 @@ public class WeaponClue {
         // store in a set to allow player to see already collected clues & to allow not sending duplicate clues
 
         List<Weapon> wepList = Arrays.stream(Weapon.values()).sequential().collect(Collectors.toList());
-        int index = wepList.size();
+        wepList.remove(Solution.getMurderWeapon());
+        int index = wepList.size() -1;
         int rand = (int) (Math.random() * index);
         String wep = "";
         wep = wepList.get(rand).toString();

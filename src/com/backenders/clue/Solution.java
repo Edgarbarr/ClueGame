@@ -24,6 +24,7 @@ public class Solution {
     }
 
     public static RolePlayer generateMurderer() {
+        System.out.println("LLLLLLLLLLLLLL");
         murderer = RolePlayer.class.getEnumConstants()
                 [new Random().nextInt(RolePlayer.class.getEnumConstants().length)];
         System.out.println(murderer);
@@ -43,5 +44,12 @@ public class Solution {
         System.out.println(murderer + " used the " + murderWeapon + ".");
     }
 
+    public static RolePlayer getMurderer() {
+        return murderer;
+    }
+
+    public static Weapon getMurderWeapon() {
+        return murderWeapon;
+    }
 }
 

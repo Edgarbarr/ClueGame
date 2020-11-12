@@ -17,7 +17,6 @@ public class Game {
     private Prompter prompter = new Prompter(new Scanner(System.in));
 
     public void start() throws IOException {
-        StringBuilder actionPrompt = new StringBuilder();
 
 
         generateGame();
@@ -29,7 +28,8 @@ public class Game {
         Predicate<Integer> validRange = integer -> 1 <= integer && integer <= 5;
 
         boolean gameIsStarted = false;
-
+        System.out.println("Press 1 to list instructions");
+        System.out.println("Press 2 to start game");
         while (!gameIsStarted) {
 
             choice = prompter.promptIntInput("", validRange, "Please use valid ");
@@ -90,38 +90,7 @@ public class Game {
             System.out.println("OK, fine then.");
         }
     }
-    private boolean checkSolutions(Guess playerGuess){
 
-        s.menu();
-
-
-    }
-
-    private Guess askPlayerGuess() {
-
-        Predicate<Integer> validRange = integer -> 0 <= integer && integer <= Weapon.values().length;
-        prompter.info("Whats your guess?");
-
-        StringBuilder askPlayerForMurderer = new StringBuilder();
-        askPlayerForMurderer.append("Choose the murderer.\n");
-
-        StringBuilder askPlayerForWeapon = new StringBuilder();
-        askPlayerForWeapon.append("Choose the murder weapon.\n");
-
-        for (RolePlayer rp : RolePlayer.values()) {
-            askPlayerForMurderer.append("Press " + rp.ordinal() + ": " + rp.toString() + " \n");
-        }
-        for (Weapon wp : Weapon.values()) {
-            askPlayerForWeapon.append("Press " + wp.ordinal() + ": " + wp.toString() + "\n");
-        }
-
-        int murdererGuess = prompter.promptIntInput(askPlayerForMurderer.toString(), validRange, "Please choose a valid number");
-        int weaponGuess = prompter.promptIntInput(askPlayerForWeapon.toString(), validRange, "Please choose a valid number");
-        prompter.info("You guess that " + RolePlayer.values()[murdererGuess] + " did it with a " + Weapon.values()[weaponGuess]).toUpperCase();
-        return new Guess();
-    }
-
-    ;
 
     private boolean checkSolutions(Guess playerGuess) {
 
@@ -141,23 +110,30 @@ public class Game {
         System.out.println(playerMovePrompt.toString());
 
         WeaponClue wc = new WeaponClue();
-        wc.theWeapon();
         RolePlayerClue rpc = new RolePlayerClue();
+
+        wc.theWeapon();
         rpc.thePerp();
+
         System.out.println("");
 
-        System.out.println("Press 3 to see list of Characters " + "\n" + "Press 4 to see list of Weapns " + "\n" + "Press 5 to see list of Rooms ");
-        Predicate<Integer> journalRange = integer -> 0 <= integer && integer >= 3;
-        int choice = prompter.promptIntInput("", journalRange, "Please pick valid int");
 
-        switch (choice) {
-            case 0 -> quit();
-            case 1 -> listWeapons();
-            case 2 -> listRolePlayers();
-            case 3 -> listRooms();
-            default -> System.out.println("that's not something you can do");
+        Predicate<Integer> journalRange = integer -> integer > -1 && integer < 5;
+
+        boolean isContinue = false;
+        while(!isContinue) {
+            System.out.println("Press 0 if quit\n"+"Press 1: List Weapons\n"+"Press 2 to see list of Characters " + "\n" + "Press 3 to see list of Rooms " + "\n"+"press 4 to continue");
+            int choice = prompter.promptIntInput("", journalRange, "Please pick valid int");
+            switch (choice) {
+                case 0 -> quit();
+                case 1 -> listWeapons();
+                case 2 -> listRolePlayers();
+                case 3 -> listRooms();
+                case 4 -> isContinue = true;
+                default -> System.out.println("that's not something you can do");
+            }
         }
-
+        letPlayerMakeGuess();
         // would you like to make a guess?
 
 
