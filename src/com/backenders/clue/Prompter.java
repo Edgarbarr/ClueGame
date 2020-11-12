@@ -42,6 +42,7 @@ public class Prompter {
             System.out.println(Color.CYAN+prompt+Color.RESET);
             try {
                 input = scanner.nextInt();
+
                 if(!validInputPattern.test(input)) {
                     throw new InputMismatchException();
                 }
@@ -49,7 +50,9 @@ public class Prompter {
             } catch(InputMismatchException e) {
                 System.out.println(Color.RED+retryText+Color.RESET);
             } finally {
-                scanner.nextLine();
+                if(scanner.hasNextLine()) {
+                    scanner.nextLine();
+                }
             }
         }
         return input;
