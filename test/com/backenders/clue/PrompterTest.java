@@ -4,10 +4,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Scanner;
 import java.util.function.Predicate;
 
@@ -50,20 +47,18 @@ public class PrompterTest {
 
     @Test
     public void promptIntInput() throws IOException {
-//        byte[] byteInput = {29};
-//        ByteArrayInputStream in = new ByteArrayInputStream(byteInput);
-//        System.setIn(in);
-//
-//        prompter = new Prompter(new Scanner(System.in));
-//
-//        int age = 29;
-//        String prompt = "Enter your age";
-//        String errorMessage = "That's not your age";
-//        Predicate predicate = integer -> true;
-//
-//
-//        int response = prompter.promptIntInput(prompt, predicate, errorMessage);
-//        assertEquals(age, response);
+        int age = 29;
+
+        scanner = new Scanner(new File("prompter-responses/prompt-int-input.txt"));
+        prompter = new Prompter(scanner);
+
+        String prompt = "Enter your age";
+        String errorMessage = "That's not your age";
+        Predicate predicate = integer -> integer.equals(29);
+
+
+        int response = prompter.promptIntInput(prompt, predicate, errorMessage);
+        assertEquals(age, response);
 
     }
 

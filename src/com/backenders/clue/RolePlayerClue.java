@@ -44,11 +44,15 @@ public class RolePlayerClue {
     }
 
     public String listRolePlayers() {
+        // check against solution to not return the solution one
+        // store in a set to allow player to see already collected clues & to allow not sending duplicate clues
+
         List<RolePlayer> rpList = Arrays.stream(RolePlayer.values()).sequential().collect(Collectors.toList());
         int index = rpList.size();
         int rand = (int) (Math.random() * index);
         String rplayer = "";
         rplayer = rpList.get(rand).getRpName();
+
         return rplayer;
     }
 
