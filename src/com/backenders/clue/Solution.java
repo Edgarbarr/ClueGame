@@ -9,11 +9,7 @@ public class Solution {
     private static RolePlayer murderer;
     private static Weapon murderWeapon;
 
-    // Can I use the above?  Or is this next line preferred syntax?
-    // Guess(RolePlayer.values()[murdererGuess], Weapon.values()[weaponGuess]);
-
-
-      boolean checkSolution(Guess playerGuess) {
+    boolean checkSolution(Guess playerGuess) {
         RolePlayer murdererGuess = playerGuess.getMurdererGuess();
         Weapon weaponGuess = playerGuess.getWeaponGuess();
         boolean result = false;
@@ -35,6 +31,7 @@ public class Solution {
         return murderWeapon;
     }
 
+    // expandability
     public void giveSolution() {
         System.out.println("Thanks for playing.");
         System.out.println("The murderer was " + murderer + ".");

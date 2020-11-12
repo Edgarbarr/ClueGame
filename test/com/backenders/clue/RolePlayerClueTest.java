@@ -1,25 +1,23 @@
-//package com.backenders.clue;
-//
-//import org.junit.Ignore;
-//import org.junit.jupiter.api.Test;
-//
-//import java.io.IOException;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//@Ignore
-//class RolePlayerClueTest {
-//    RolePlayerClue rpc = new RolePlayerClue();
-//
-//    // checking to see if the csv txt file is read in and loaded into the array list if so not null
-//    @Test
-//    void isTheFileReadIn() throws IOException {
-//        assertNotNull(rpc.fileReaderRPClues());
-//    }
-//
-//    // checking to see if the players are added to an arraylist if so not null
-//    @Test
-//    void isThereAListOfPlayerObjects() {
-//        assertNotNull(rpc.listRolePlayers());
-//    }
-//
-//}
+package com.backenders.clue;
+
+import org.junit.Test;
+
+import java.io.IOException;
+
+import static org.junit.Assert.*;
+
+public class RolePlayerClueTest {
+    RolePlayerClue rpc = new RolePlayerClue();
+
+    @Test
+    public void fileReaderNotEmpty() throws IOException {
+        assertNotNull(rpc.fileReaderRPClues());
+    }
+
+    @Test
+    public void rolePlayersNotEmpty() {
+        assertNotNull(rpc.listRolePlayers());
+    }
+
+
+}

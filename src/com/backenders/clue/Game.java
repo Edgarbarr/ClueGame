@@ -5,22 +5,15 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class Game {
-    private RolePlayer rolePlayers;
-    private Weapon weapons;
-    private List<RoomType> rooms; //can be enum or class
-    private WeaponClue wClue;
-    private RolePlayerClue rpClue;
     private Solution solution = new Solution();
     private Player hp = new Player();
-    private Stories stories;
     private GameMap gameMap = new GameMap.Builder().generateStandardMap().build();
     private Prompter prompter = new Prompter(new Scanner(System.in));
 
+    // Game starts
     public void start() throws IOException {
 
-
         generateGame();
-
 
         int choice;
 
@@ -28,81 +21,67 @@ public class Game {
         Predicate<Integer> validRange = integer -> 1 <= integer && integer <= 5;
 
         boolean gameIsStarted = false;
-        System.out.println("Press 1 to list instructions");
-        System.out.println("Press 2 to start game");
+        s.menu();
         while (!gameIsStarted) {
 
             choice = prompter.promptIntInput("", validRange, "Please use valid ");
             switch (choice) {
                 case 1 -> s.instructions();
-                case 2 -> gameIsStarted=true;
+                case 2 -> gameIsStarted = true;
                 case 3 -> listRolePlayers();
                 case 4 -> listWeapons();
                 case 5 -> listRooms();
-
             }
         }
-
-
         while (true) {
-
 
             offerMoveToPlayer(hp.getCurrentRoom());
 
-//
         }
     }
 
-    public void displayRules() {
-
-    }
-
+    // builds game begins text
     private void generateGame() throws IOException {
         hp.setCurrentRoom(RoomType.BALLROOM);
         Stories s = new Stories();
+        s.banner();
         s.welcomeMessage();
 
         Solution.generateMurderWeapon();
         Solution.generateMurderer();
-
-
     }
-    public void letPlayerMakeGuess(){
+
+    // players make a guess
+    public void letPlayerMakeGuess() {
         System.out.println("Would you like to make a guess?");
         System.out.println("Press 1 if yes");
         System.out.println("Press 2 if no");
-        Predicate<Integer> isValid = input -> input == 1 || input== 2;
+        Predicate<Integer> isValid = input -> input == 1 || input == 2;
         int choice = prompter.promptIntInput("", isValid, "Not a valid input.");
         if (choice == 1) {
             Guess playerGuess = hp.askPlayerGuess();
             boolean isPlayerRight = solution.checkSolution(playerGuess);
             if (isPlayerRight) {
-                System.out.println("Good job");
+                System.out.println("Good job!");
+                Stories s = new Stories();
+                s.smileyWin();
                 System.exit(0);
             } else {
                 System.out.println("Wrong");
             }
-        }else if (choice == 2) {
+        } else if (choice == 2) {
             System.out.println("OK, fine then.");
         }
     }
 
-
-    private boolean checkSolutions(Guess playerGuess) {
-
-//        return Solution.checkSolution(playerGuess);
-        return false;
-    }
-
-    ;
-
+    // allow moves
     private void offerMoveToPlayer(RoomType playerRoom) throws IOException {
 
         Map<String, RoomType> currentExits = gameMap.getExits(playerRoom);
         StringBuilder playerMovePrompt = new StringBuilder();
 
         playerMovePrompt.append("You are in the " + hp.getCurrentRoom().name() + "\n");
-        playerMovePrompt.append(hp.getCurrentRoom().getDescription() + "\n");
+        playerMovePrompt.append(hp.getCurrentRoom().getRoomDescription() + "\n" + Color.RESET);
         System.out.println(playerMovePrompt.toString());
 
         WeaponClue wc = new WeaponClue();
@@ -110,15 +89,13 @@ public class Game {
 
         wc.theWeapon();
         rpc.thePerp();
-
         System.out.println("");
-
 
         Predicate<Integer> journalRange = integer -> integer > -1 && integer < 5;
 
         boolean isContinue = false;
-        while(!isContinue) {
-            System.out.println("Press 0 if quit\n"+"Press 1: List Weapons\n"+"Press 2 to see list of Characters " + "\n" + "Press 3 to see list of Rooms " + "\n"+"press 4 to continue");
+        while (!isContinue) {
+            System.out.println("Press 0: Quit\n" + "Press 1: List Weapons\n" + "Press 2: List Characters " + "\n" + "Press 3: List of Rooms " + "\n" + "Press 4: Continue");
             int choice = prompter.promptIntInput("", journalRange, "Please pick valid int");
             switch (choice) {
                 case 0 -> quit();
@@ -129,9 +106,9 @@ public class Game {
                 default -> System.out.println("that's not something you can do");
             }
         }
-        letPlayerMakeGuess();
-        // would you like to make a guess?
 
+        // would you like to make a guess?
+        letPlayerMakeGuess();
 
         System.out.println(currentExits);
         prompter.info("Where would you like to go? Press the Direction Letter to move to new room.");
@@ -144,59 +121,28 @@ public class Game {
 
         hp.setCurrentRoom(currentExits.get(directionInput.toUpperCase()));
         System.out.println(hp.getCurrentRoom());
-
     }
 
-    ;
-
-    private <T extends Enum<T>> void printList(Class<T> enumType) {
-        for (T enumConstant : enumType.getEnumConstants()) {
-            System.out.println(enumConstant.name());
-        }
-        System.out.println();
-    }
-
-    ;
+    // print list of Weapons, Role Players, Rooms
 
     private void listRolePlayers() {
-        printList(RolePlayer.class);
+        RolePlayer.printRolePlayerList(RolePlayer.rpList());
     }
-
-    ;
 
     private void listRooms() {
-        printList(RoomType.class);
-    }
 
-    ;
+       RoomType.printRooms();
+    }
 
     private void listWeapons() {
-        printList(Weapon.class);
+        Weapon.printWeaponList();
     }
 
-    ;
 
     private void quit() {
-        System.out.println("Thanks for playing have a nice day");
+        solution.giveSolution();
+
         System.exit(0);
     }
 
-    private void checkJournal() {
-        StringBuilder listOptions = new StringBuilder();
-        listOptions.append("what would you like to list?\n");
-        listOptions.append("Press 0: Weapons\n");
-        listOptions.append("Press 1: RolePlayers\n");
-        listOptions.append("Press 2: Rooms\n");
-
-        Predicate<Integer> journalRange = integer -> 0 <= integer || integer >= 2;
-        int choice = prompter.promptIntInput(listOptions.toString(), journalRange, "Please pick valid int");
-
-        switch (choice) {
-            case 0 -> listWeapons();
-            case 1 -> listRolePlayers();
-            case 2 -> listRooms();
-        }
-    }
-
-    //    method(Stories.clueTemplates, WeaponList, RolePlayer);// chose how you want to implement clue making
 }

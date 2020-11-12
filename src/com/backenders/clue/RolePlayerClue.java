@@ -51,16 +51,14 @@ public class RolePlayerClue {
         int index = rpList.size() -1;
         rpList.remove(Solution.getMurderer());
         int rand = (int) (Math.random() * index);
-        String rplayer = "";
+        String rplayer;
         rplayer = rpList.get(rand).getRpName();
-
         return rplayer;
     }
 
     public Object thePerp() throws IOException {
-        String yourRolePlayerClue = listRolePlayers() + fileReaderRPClues();
-        System.out.println(yourRolePlayerClue);
-
+        String yourRolePlayerClue = listRolePlayers()  + Color.GREEN + fileReaderRPClues();
+        System.out.println(yourRolePlayerClue + Color.RESET);
         return null;
     }
 

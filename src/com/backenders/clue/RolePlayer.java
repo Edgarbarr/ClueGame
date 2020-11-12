@@ -17,8 +17,6 @@ public enum RolePlayer {
     PROFESSOR_EDGAR("Professor Edgar", "Intelligent, creative and soft-spoken. Rockstar of code review. His instruction is invaluable."),
     GEMOLOGIST_GINA("Gemologist Gina", "Curious and a little odd. She can spot a fake.");
 
-    protected static EnumSet<RolePlayer> rolePlayers;
-
     private String charDescription;
     private String rpName;
 
@@ -32,7 +30,7 @@ public enum RolePlayer {
         return Stream.of(RolePlayer.values());
     }
 
-    public void printRolePlayerList(Stream<RolePlayer> rpList) {
+    public static void printRolePlayerList(Stream<RolePlayer> rpList) {
         RolePlayer.rpList()
                 .map(RolePlayer::getRpName)
                 .forEach(System.out::println);
@@ -50,12 +48,13 @@ public enum RolePlayer {
     }
 
     protected String getRpName() {
-        return rpName;
+
+        return Color.YELLOW + rpName + Color.RESET;
     }
 
     @Override
     public String toString() {
-        return rpName;
+        return Color.YELLOW + rpName + Color.RESET;
     }
 
 }

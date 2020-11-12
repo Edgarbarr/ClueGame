@@ -1,5 +1,7 @@
 package com.backenders.clue;
 
+import java.util.stream.Stream;
+
 public enum Weapon {//NEED 10 CREATIVE WEAPONS
     RIB_EYE("Rib Eye"),
     DAGGER("Dagger"),
@@ -14,12 +16,21 @@ public enum Weapon {//NEED 10 CREATIVE WEAPONS
 
     private String regName;
 
-    private Weapon(String name) {
+    Weapon(String name) {
         this.regName = name;
+    }
+
+    static Stream<Weapon> wList() {
+        return Stream.of(Weapon.values());
+    }
+
+    public static void printWeaponList() {
+        Weapon.wList()
+                .forEach(System.out::println);
     }
 
     @Override
     public String toString() {
-        return regName;
+                        return Color.MAGENTA + regName + Color.RESET;
     }
 }

@@ -3,6 +3,7 @@ package com.backenders.clue;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+// creates the map and allows navigation through the game
 public final class GameMap {
     private final Map<RoomType, Map<String, RoomType>> gameMap;
 
