@@ -10,7 +10,7 @@ public class Game {
     private List<RoomType> rooms; //can be enum or class
     private WeaponClue wClue;
     private RolePlayerClue rpClue;
-    private Solution solution;
+    private Solution solution = new Solution();
     private Player hp = new Player();
     private Stories stories;
     private GameMap gameMap = new GameMap.Builder().generateStandardMap().build();
@@ -33,11 +33,11 @@ public class Game {
             prompter.info("Please choose your action");
             choice = prompter.promptIntInput(actionPrompt.toString(), validRange, "Please use valid ");
             switch(choice) {
-                case 0 -> askPlayerGuess();
+                case 0 -> letPlayerMakeGuess();
                 case 1 -> offerMoveToPlayer(hp.getCurrentRoom());
 //                case 2 -> checkForClues();
                 case 3 -> checkJournal();
-                case 4 -> quit();
+                case 4 -> solution.giveSolution();
                 default -> System.out.println("thats not something you can do");
             }
         }
@@ -53,33 +53,30 @@ public class Game {
         prompter.promptPause();
         prompter.info("A crazy mystery game its pretty cool");
         prompter.promptPause();
+        Solution.generateMurderWeapon();
+        Solution.generateMurderer();
+
 
     }
-
-    private Guess askPlayerGuess(){
-
-        Predicate<Integer> validRange = integer -> 0 <= integer && integer <= Weapon.values().length;
-        prompter.info("Whats your guess?");
-
-        StringBuilder askPlayerForMurderer = new StringBuilder();
-        askPlayerForMurderer.append("Choose the murderer.\n");
-
-        StringBuilder askPlayerForWeapon = new StringBuilder();
-        askPlayerForWeapon.append("Choose the murder weapon.\n");
-
-        for(RolePlayer rp : RolePlayer.values()) {
-            askPlayerForMurderer.append("Press " + rp.ordinal() + ": "+ rp.toString()+ " \n");
+    public void letPlayerMakeGuess(){
+        System.out.println("Would you like to make a guess?");
+        System.out.println("Press 1 if yes");
+        System.out.println("Press 2 if no");
+        Predicate<Integer> isValid = input -> input == 1 || input== 2;
+        int choice = prompter.promptIntInput("", isValid, "Not a valid input.");
+        if (choice == 1) {
+            Guess playerGuess = hp.askPlayerGuess();
+            boolean isPlayerRight = solution.checkSolution(playerGuess);
+            if (isPlayerRight) {
+                System.out.println("Good job");
+                System.exit(0);
+            } else {
+                System.out.println("Wrong");
+            }
+        }else if (choice == 2) {
+            System.out.println("OK, fine then.");
         }
-        for(Weapon wp : Weapon.values()) {
-            askPlayerForWeapon.append("Press " + wp.ordinal()+ ": "+ wp.toString() + "\n");
-        }
-
-        int murdererGuess = prompter.promptIntInput(askPlayerForMurderer.toString(), validRange, "Please choose a valid number");
-        int weaponGuess = prompter.promptIntInput(askPlayerForWeapon.toString(), validRange, "Please choose a valid number");
-        prompter.info("You guess that "+ RolePlayer.values()[murdererGuess] + " did it with a " +Weapon.values()[weaponGuess]).toUpperCase();
-        return new Guess();
-    };
-
+    }
     private boolean checkSolutions(Guess playerGuess){
 //        return Solution.checkSolution(playerGuess);
         return false;
