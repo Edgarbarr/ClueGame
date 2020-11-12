@@ -44,6 +44,9 @@ public class WeaponClue {
     }
 
     public String listWeapons() {
+        // check against solution to not return the solution one
+        // store in a set to allow player to see already collected clues & to allow not sending duplicate clues
+
         List<Weapon> wepList = Arrays.stream(Weapon.values()).sequential().collect(Collectors.toList());
         int index = wepList.size();
         int rand = (int) (Math.random() * index);
